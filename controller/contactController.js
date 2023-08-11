@@ -1,11 +1,12 @@
+const asyncHandler = require("express-async-handler");
 /* 
 @desc Get all contacts
 @route GET /api/contacts
 @access public
 */
-const getAllContacts = (req, res) => {
+const getAllContacts = asyncHandler(async (req, res) => {
   res.status(200).json({ message: "get all contacts" });
-};
+});
 
 /* 
 @desc Get a single contacts
@@ -18,9 +19,17 @@ const getAllContacts = (req, res) => {
 @route POST /api/contacts/addContact
 @access public
 */
-const addContact = (req, res) => {
+const addContact = asyncHandler(async (req, res) => {
+  const { name, email, phone } = req.body;
+  if (!name || !email || !phone) {
+    res.status(400);
+    //.json({ message: "All fields are required" });
+    throw new Error("All fields are required");
+    //return;
+  }
   console.log(req.body);
-};
+  return res.status(201).json({ message: "contact created" });
+});
 
 /* 
 @desc edit contact details
