@@ -7,7 +7,7 @@ const errorHandler = (err, req, res, next) => {
       res.json({
         title: "Validation Failed",
         message: err.message,
-        stackTrace: err.stack,
+        stackTrace: err.stack.slice(0, 30),
       });
       break;
     case apiStatusCodes.notFound:
