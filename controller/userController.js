@@ -7,7 +7,7 @@ const registerUser = async (req, res) => {
   try {
     const { username, email, password } = req.body;
     const userData = { username, email, password };
-    const validation = userValidation.userValidation.safeParse(userData);
+    const validation = userValidation.safeParse(userData);
 
     if (!validation.success) {
       return res
@@ -55,6 +55,10 @@ const loginUser = async (req, res) => {
     }
     const comparePassword = await bcrypt.compare(password, user.password);
 
+    if (!comparePassword) {
+      return res.status(400).json({ message: "password mismatch" });
+    }
+
     if (user && comparePassword) {
       const accessToken = jwt.sign(
         {
@@ -76,7 +80,7 @@ const loginUser = async (req, res) => {
 //get current user
 const currentUser = async (req, res) => {
   try {
-    return res.status(200).json("welcome");
+    return res.status(200).json(req.user);
   } catch (error) {}
 };
 

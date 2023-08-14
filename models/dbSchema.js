@@ -2,6 +2,11 @@ const mongoose = require("mongoose");
 
 const contactSchema = new mongoose.Schema(
   {
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: "User",
+    },
     name: {
       type: String,
       required: [true, "please add contact name"],
@@ -9,7 +14,6 @@ const contactSchema = new mongoose.Schema(
     },
     email: {
       type: String,
-      unique: true,
       required: [true, "please add email address"],
       trim: true,
       set: (value) => value.toLowerCase(),
